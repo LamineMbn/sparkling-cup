@@ -162,7 +162,7 @@ class SparklingCupTest {
         }
 
         @Test
-        void should_quality_decreases() {
+        void should_quality_decreases_twice_as_fast_as_basice_item() {
             Item[] items = new Item[] { new Item("Conjured Mana Cake", 10, 20) };
             SparklingCup sut = new SparklingCup(items);
             sut.updateQuality();
@@ -178,7 +178,7 @@ class SparklingCupTest {
         }
 
         @Test
-        void should_quality_decreases_twice_faster_after_the_sell_in_date() {
+        void should_quality_decreases__twice_as_fast_as_basice_item_after_the_sell_in_date() {
             Item[] items = new Item[] { new Item("Conjured Mana Cake", -1, 20) };
             SparklingCup sut = new SparklingCup(items);
             sut.updateQuality();
