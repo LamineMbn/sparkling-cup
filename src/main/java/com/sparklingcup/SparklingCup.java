@@ -7,6 +7,7 @@ public class SparklingCup {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String BACKSTAGE_PASSES_TO_TAFKAL80ETC_CONCERT = "Backstage passes to a TAFKAL80ETC concert";
     private static final String SULFURAS_HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
+    private static final String CONJURED = "Conjured Mana Cake";
     private final Item[] items;
 
     public SparklingCup(Item[] items) {
@@ -25,11 +26,12 @@ public class SparklingCup {
                 updateAgedBrie(item);
             } else if (BACKSTAGE_PASSES_TO_TAFKAL80ETC_CONCERT.equals(item.name)) {
                 updateBackstagePasses(item);
+            } else if (CONJURED.equals(item.name)){
+                updateConjuredItem(item);
             } else {
                 updateBasicItem(item);
             }
         });
-
     }
 
     private Predicate<Item> excludeSulfuras() {
@@ -57,6 +59,14 @@ public class SparklingCup {
         }
     }
 
+    private void updateConjuredItem(Item item) {
+        var conjuredDecreaseFactor = 2;
+        decreaseQuality(item, conjuredDecreaseFactor);
+        if (item.sellIn < 0) {
+            decreaseQuality(item, conjuredDecreaseFactor);
+        }
+    }
+
     private void updateBasicItem(Item item) {
         decreaseQuality(item);
         if (item.sellIn < 0) {
@@ -71,8 +81,12 @@ public class SparklingCup {
     }
 
     private void decreaseQuality(Item item) {
+        decreaseQuality(item, 1);
+    }
+    
+    private void decreaseQuality(Item item, int decreaseFactor) {
         if (item.quality > 0) {
-            item.quality -= 1;
+            item.quality -= decreaseFactor;
         }
     }
 }
