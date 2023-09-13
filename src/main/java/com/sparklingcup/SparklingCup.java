@@ -1,10 +1,13 @@
 package com.sparklingcup;
 
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 public class SparklingCup {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String BACKSTAGE_PASSES_TO_TAFKAL80ETC_CONCERT = "Backstage passes to a TAFKAL80ETC concert";
     private static final String SULFURAS_HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
-    private Item[] items;
+    private final Item[] items;
 
     public SparklingCup(Item[] items) {
         this.items = items;
@@ -15,12 +18,8 @@ public class SparklingCup {
     }
 
     public void updateQuality() {
-        for (Item item : items) {
-            if (SULFURAS_HAND_OF_RAGNAROS.equals(item.name)) {
-                continue;
-            }
-
-            item.sellIn = item.sellIn - 1;
+        Arrays.stream(items).filter(excludeSulfuras()).forEach(item -> {
+            item.sellIn -= 1;
 
             if (AGED_BRIE.equals(item.name)) {
                 updateAgedBrie(item);
@@ -29,7 +28,12 @@ public class SparklingCup {
             } else {
                 updateBasicItem(item);
             }
-        }
+        });
+
+    }
+
+    private Predicate<Item> excludeSulfuras() {
+        return item -> !SULFURAS_HAND_OF_RAGNAROS.equals(item.name);
     }
 
     private void updateAgedBrie(Item item) {
